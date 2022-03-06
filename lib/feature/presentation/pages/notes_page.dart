@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key? key}) : super(key: key);
@@ -41,7 +42,12 @@ class _NotesPageState extends State<NotesPage> {
         title: const Text('Dub notes'),
         actions: [
           IconButton(
-            onPressed: () => !isBlockView,
+            onPressed: () {
+              // isBlockView = !isBlockView;
+              setState(() {
+                isBlockView = !isBlockView;
+              });
+            },
             icon: const Icon(
               Icons.view_headline_rounded,
               color: Colors.white,
@@ -49,41 +55,77 @@ class _NotesPageState extends State<NotesPage> {
           )
         ],
       ),
-      body: ListViewWidget(
+      body: NotesGridView(
         texts: texts,
         titles: titles,
+        isBlockView: isBlockView,
       ),
     );
   }
 }
 
-class ListViewWidget extends StatelessWidget {
+class NotesGridView extends StatelessWidget {
   final List<String> titles;
   final List<String> texts;
+  final bool isBlockView;
 
-  const ListViewWidget({
+  const NotesGridView({
     Key? key,
     required this.titles,
     required this.texts,
+    required this.isBlockView,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        padding: const EdgeInsets.all(8),
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(
-              titles[index],
-              style: const TextStyle(fontSize: 22),
-            ),
-            subtitle: Text(
-              texts[index],
-              // style: const TextStyle(fontSize: 22),
-            ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: titles.length);
+    return MasonryGridView.count(
+      crossAxisCount: isBlockView ? 2 : 1,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+      itemCount: titles.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            titles[index],
+            style: const TextStyle(fontSize: 22),
+          ),
+          subtitle: Text(
+            texts[index],
+            // style: const TextStyle(fontSize: 22),
+          ),
+        );
+      },
+    );
   }
 }
+
+// class ListViewWidget extends StatelessWidget {
+//   final List<String> titles;
+//   final List<String> texts;
+
+//   const ListViewWidget({
+//     Key? key,
+//     required this.titles,
+//     required this.texts,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.separated(
+//         padding: const EdgeInsets.all(8),
+//         itemBuilder: (BuildContext context, int index) {
+//           return ListTile(
+//             title: Text(
+//               titles[index],
+//               style: const TextStyle(fontSize: 22),
+//             ),
+//             subtitle: Text(
+//               texts[index],
+//               // style: const TextStyle(fontSize: 22),
+//             ),
+//           );
+//         },
+//         separatorBuilder: (BuildContext context, int index) => const Divider(),
+//         itemCount: titles.length);
+//   }
+// }
