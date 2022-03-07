@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'feature/presentation/pages/notes_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'app.dart';
 
 void main() {
-  runApp(const MaterialApp(home: NotesPage()));
+  BlocOverrides.runZoned(
+    () => runApp(const NotesApp()),
+    // blocObserver: CounterObserver(),
+  );
 }

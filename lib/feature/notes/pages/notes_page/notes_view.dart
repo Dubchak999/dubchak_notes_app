@@ -1,15 +1,17 @@
+import 'package:dubchak_notes_app/feature/notes/bloc/notes_view/notes_view_type_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class NotesPage extends StatefulWidget {
-  const NotesPage({Key? key}) : super(key: key);
+class NotesView extends StatelessWidget {
+  NotesView({Key? key}) : super(key: key);
 
-  @override
-  State<NotesPage> createState() => _NotesPageState();
-}
+//   @override
+//   State<NotesView> createState() => _NotesViewState();
+// }
 
-class _NotesPageState extends State<NotesPage> {
-  bool isBlockView = false;
+// class _NotesViewState extends State<NotesView> {
+  // bool isBlockView = false;
   final List<String> titles = [
     'title',
     'title',
@@ -40,14 +42,11 @@ class _NotesPageState extends State<NotesPage> {
       ),
       appBar: AppBar(
         title: const Text('Dub notes'),
-        actions: [
+        actions: <Widget>[
           IconButton(
-            onPressed: () {
-              // isBlockView = !isBlockView;
-              setState(() {
-                isBlockView = !isBlockView;
-              });
-            },
+            key: const Key('notesView_changeViewType_IconButton'),
+            onPressed: () =>
+                context.read<NotesViewModeCubit>().changeViewType(),
             icon: const Icon(
               Icons.view_headline_rounded,
               color: Colors.white,
@@ -55,10 +54,12 @@ class _NotesPageState extends State<NotesPage> {
           )
         ],
       ),
-      body: NotesGridView(
-        texts: texts,
-        titles: titles,
-        isBlockView: isBlockView,
+      body: BlocBuilder<NotesViewModeCubit, bool>(
+        // bloc: NotesViewModeCubit(),
+        builder: (context, isBlockView) {
+          return NotesGridView(
+              titles: titles, texts: texts, isBlockView: isBlockView);
+        },
       ),
     );
   }
@@ -98,34 +99,3 @@ class NotesGridView extends StatelessWidget {
     );
   }
 }
-
-// class ListViewWidget extends StatelessWidget {
-//   final List<String> titles;
-//   final List<String> texts;
-
-//   const ListViewWidget({
-//     Key? key,
-//     required this.titles,
-//     required this.texts,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.separated(
-//         padding: const EdgeInsets.all(8),
-//         itemBuilder: (BuildContext context, int index) {
-//           return ListTile(
-//             title: Text(
-//               titles[index],
-//               style: const TextStyle(fontSize: 22),
-//             ),
-//             subtitle: Text(
-//               texts[index],
-//               // style: const TextStyle(fontSize: 22),
-//             ),
-//           );
-//         },
-//         separatorBuilder: (BuildContext context, int index) => const Divider(),
-//         itemCount: titles.length);
-//   }
-// }
