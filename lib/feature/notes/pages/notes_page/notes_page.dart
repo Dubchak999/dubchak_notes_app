@@ -10,7 +10,7 @@ class NotesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<NotesViewModeCubit>(
       create: (context) => NotesViewModeCubit(),
-      child: NotesView(),
+      child: const NotesView(),
     );
   }
 }
