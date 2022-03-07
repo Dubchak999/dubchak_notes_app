@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class NotesView extends StatelessWidget {
-  NotesView({Key? key}) : super(key: key);
+class NotesView extends StatefulWidget {
+  const NotesView({Key? key}) : super(key: key);
 
-//   @override
-//   State<NotesView> createState() => _NotesViewState();
-// }
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
 
-// class _NotesViewState extends State<NotesView> {
+class _NotesViewState extends State<NotesView>
+    with SingleTickerProviderStateMixin {
   // bool isBlockView = false;
   final List<String> titles = [
     'title',
@@ -28,39 +29,57 @@ class NotesView extends StatelessWidget {
     'titletitl etittitle letitletitlet itletitlet itletitletitle title',
   ];
 
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-            fixedSize: const Size(54, 54), shape: const CircleBorder()),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
-      appBar: AppBar(
-        title: const Text('Dub notes'),
-        actions: <Widget>[
-          IconButton(
-            key: const Key('notesView_changeViewType_IconButton'),
-            onPressed: () =>
-                context.read<NotesViewModeCubit>().changeViewMode(),
-            icon: const Icon(
-              Icons.view_headline_rounded,
+    return BlocBuilder<NotesViewModeCubit, bool>(
+      builder: (context, isBlockView) {
+        return Scaffold(
+          floatingActionButton: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+                fixedSize: const Size(54, 54), shape: const CircleBorder()),
+            child: const Icon(
+              Icons.add,
               color: Colors.white,
             ),
-          )
-        ],
-      ),
-      body: BlocBuilder<NotesViewModeCubit, bool>(
-        // bloc: NotesViewModeCubit(),
-        builder: (context, isBlockView) {
-          return _NotesGridView(
-              titles: titles, texts: texts, isBlockView: isBlockView);
-        },
-      ),
+          ),
+          appBar: AppBar(
+            title: const Text('Dub notes'),
+            actions: <Widget>[
+              IconButton(
+                  key: const Key('notesView_changeViewType_IconButton'),
+                  onPressed: () {
+                    context.read<NotesViewModeCubit>().changeViewMode();
+                    isBlockView
+                        ? _animationController.reverse()
+                        : _animationController.forward();
+                  },
+                  icon: AnimatedIcon(
+                      icon: AnimatedIcons.view_list,
+                      progress: _animationController))
+            ],
+          ),
+          body: _NotesGridView(
+              titles: titles, texts: texts, isBlockView: isBlockView),
+        );
+      },
     );
   }
 }
