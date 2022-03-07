@@ -36,7 +36,7 @@ class _NotesViewState extends State<NotesView>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
     );
   }
 
@@ -111,7 +111,6 @@ class _NotesGridView extends StatelessWidget {
           ),
           subtitle: Text(
             texts[index],
-            // style: const TextStyle(fontSize: 22),
           ),
         );
       },

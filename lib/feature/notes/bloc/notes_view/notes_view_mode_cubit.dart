@@ -1,6 +1,6 @@
-import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class NotesViewModeCubit extends Cubit<bool> {
+class NotesViewModeCubit extends HydratedCubit<bool> {
   NotesViewModeCubit() : super(true);
 
   // void changeViewType() => emit(!state);
@@ -15,4 +15,9 @@ class NotesViewModeCubit extends Cubit<bool> {
   void _falseToTrue() {
     emit(true);
   }
+
+  @override
+  bool fromJson(Map<String, dynamic> json) => json['value'] as bool;
+  @override
+  Map<String, bool> toJson(bool state) => {'value': state};
 }
