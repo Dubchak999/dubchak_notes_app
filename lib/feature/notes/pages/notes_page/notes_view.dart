@@ -48,38 +48,43 @@ class _NotesViewState extends State<NotesView>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NotesViewModeCubit, bool>(
-      builder: (context, isBlockView) {
-        return Scaffold(
-          floatingActionButton: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                fixedSize: const Size(54, 54), shape: const CircleBorder()),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-          appBar: AppBar(
-            title: const Text('Dub notes'),
-            actions: <Widget>[
-              IconButton(
-                  key: const Key('notesView_changeViewType_IconButton'),
-                  onPressed: () {
-                    context.read<NotesViewModeCubit>().changeViewMode();
-                    isBlockView
-                        ? _animationController.reverse()
-                        : _animationController.forward();
-                  },
-                  icon: AnimatedIcon(
-                      icon: AnimatedIcons.view_list,
-                      progress: _animationController))
-            ],
-          ),
-          body: _NotesGridView(
-              titles: titles, texts: texts, isBlockView: isBlockView),
-        );
-      },
+    return Scaffold(
+      floatingActionButton: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+            fixedSize: const Size(54, 54), shape: const CircleBorder()),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+      appBar: AppBar(
+        title: const Text('Dub notes'),
+        actions: <Widget>[
+          BlocBuilder<NotesViewModeCubit, bool>(
+            builder: (context, isBlockView) {
+              return IconButton(
+                key: const Key('notesView_changeViewType_IconButton'),
+                onPressed: () {
+                  context.read<NotesViewModeCubit>().changeViewMode();
+                  isBlockView
+                      ? _animationController.reverse()
+                      : _animationController.forward();
+                },
+                icon: AnimatedIcon(
+                    icon: AnimatedIcons.view_list,
+                    progress: _animationController),
+              );
+            },
+          )
+        ],
+      ),
+      body: BlocBuilder<NotesViewModeCubit, bool>(
+        builder: (context, isBlockView) {
+          return _NotesGridView(
+              titles: titles, texts: texts, isBlockView: isBlockView);
+        },
+      ),
     );
   }
 }

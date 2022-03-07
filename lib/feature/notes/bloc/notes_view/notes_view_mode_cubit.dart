@@ -17,7 +17,7 @@ class NotesViewModeCubit extends HydratedCubit<bool> {
   }
 
   @override
-  bool fromJson(Map<String, dynamic> json) => json['value'] as bool;
+  bool fromJson(Map<String, dynamic> json) => json['mode'] as bool;
   @override
-  Map<String, bool> toJson(bool state) => {'value': state};
+  Map<String, bool> toJson(bool state) => {'mode': state};
 }
