@@ -1,4 +1,4 @@
-import 'package:dubchak_notes_app/feature/notes/bloc/notes_view/notes_view_type_cubit.dart';
+import 'package:dubchak_notes_app/feature/notes/bloc/notes_view/notes_view_mode_cubit.dart';
 import 'package:dubchak_notes_app/feature/notes/pages/notes_page/notes_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

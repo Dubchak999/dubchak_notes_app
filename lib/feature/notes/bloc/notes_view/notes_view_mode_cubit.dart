@@ -4,7 +4,7 @@ class NotesViewModeCubit extends Cubit<bool> {
   NotesViewModeCubit() : super(true);
 
   // void changeViewType() => emit(!state);
-  void changeViewType() {
+  void changeViewMode() {
     (state == true ? _trueToFalse() : _falseToTrue());
   }
 

@@ -1,4 +1,4 @@
-import 'package:dubchak_notes_app/feature/notes/bloc/notes_view/notes_view_type_cubit.dart';
+import 'package:dubchak_notes_app/feature/notes/bloc/notes_view/notes_view_mode_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -46,7 +46,7 @@ class NotesView extends StatelessWidget {
           IconButton(
             key: const Key('notesView_changeViewType_IconButton'),
             onPressed: () =>
-                context.read<NotesViewModeCubit>().changeViewType(),
+                context.read<NotesViewModeCubit>().changeViewMode(),
             icon: const Icon(
               Icons.view_headline_rounded,
               color: Colors.white,
@@ -57,7 +57,7 @@ class NotesView extends StatelessWidget {
       body: BlocBuilder<NotesViewModeCubit, bool>(
         // bloc: NotesViewModeCubit(),
         builder: (context, isBlockView) {
-          return NotesGridView(
+          return _NotesGridView(
               titles: titles, texts: texts, isBlockView: isBlockView);
         },
       ),
@@ -65,12 +65,12 @@ class NotesView extends StatelessWidget {
   }
 }
 
-class NotesGridView extends StatelessWidget {
+class _NotesGridView extends StatelessWidget {
   final List<String> titles;
   final List<String> texts;
   final bool isBlockView;
 
-  const NotesGridView({
+  const _NotesGridView({
     Key? key,
     required this.titles,
     required this.texts,
